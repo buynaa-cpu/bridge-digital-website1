@@ -1,0 +1,1102 @@
+<!DOCTYPE html>
+<html lang="mn" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bridge Digital - Дижитал Шийдлүүд</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        /* Өнгөний хувьсагчууд - DARK горимд анхдагч */
+        :root {
+            --neon-green: #39FF14; /* Неон Грин */
+            --cyan: #00D9FF; /* Циан Цэнхэр */
+            --bg-primary: #000000; /* Хар Дээвсгэр */
+            --bg-secondary: #111111; /* Бараан Саарал */
+            --bg-tertiary: #0a0a0a; /* Илүү Бараан Саарал */
+            --text-primary: #FFFFFF; /* Цагаан Текст */
+            --text-secondary: rgba(255, 255, 255, 0.85); /* Бага Зэргийн Тунгалаг Цагаан */
+        }
+
+        /* LIGHT горимд хувьсагчуудыг шинээр тодорхойлох */
+        [data-theme="light"] {
+            --neon-green: #00b300; /* Илүү Тод Ногоон (Light) */
+            --cyan: #0077cc; /* Илүү Тод Цэнхэр (Light) */
+            --bg-primary: #FFFFFF; /* Цагаан Дээвсгэр */
+            --bg-secondary: #f0f0f0; /* Хөнгөн Саарал */
+            --bg-tertiary: #e0e0e0; /* Илүү Хөнгөн Саарал */
+            --text-primary: #000000; /* Хар Текст */
+            --text-secondary: rgba(0, 0, 0, 0.85); /* Бага Зэргийн Тунгалаг Хар */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-primary); /* BG-Primary ашиглах */
+            color: var(--text-primary); /* TEXT-Primary ашиглах */
+            overflow-x: hidden;
+            transition: background-color 0.3s, color 0.3s; /* Үзэмжийг сайжруулах */
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            /* Dark горимд илүү тохиромжтой. Light горимд background-color-ийг өөрчилнө */
+            /* Light горимд зориулсан тусгай заалт */
+            background: var(--bg-primary); /* Dark and Light-т өөр өөр дэвсгэр өгөх */
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            
+            -webkit-backdrop-filter: blur(10px); 
+            backdrop-filter: blur(10px); 
+            
+            z-index: 1000;
+            padding: 1rem 5%;
+            border-bottom: 1px solid rgba(57, 255, 20, 0.1);
+        }
+
+        /* Навигацийн дэвсгэр өнгөний шилжилт */
+        [data-theme="light"] nav {
+            background: rgba(255, 255, 255, 0.95);
+            border-bottom: 1px solid rgba(0, 179, 0, 0.2);
+        }
+
+
+        nav .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: var(--neon-green);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-shadow: 0 0 20px rgba(57, 255, 20, 0.5);
+        }
+
+        [data-theme="light"] .logo {
+            text-shadow: 0 0 20px rgba(0, 179, 0, 0.5);
+        }
+
+
+        .logo:hover {
+            text-shadow: 0 0 30px var(--neon-green);
+            transform: scale(1.05);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-primary); /* TEXT-Primary ашиглах */
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.3s;
+            position: relative;
+            padding: 0.5rem 0;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--neon-green);
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--neon-green);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 6px;
+            cursor: pointer;
+        }
+
+        .menu-toggle span {
+            width: 30px;
+            height: 3px;
+            background: var(--neon-green);
+            transition: 0.3s;
+            border-radius: 2px;
+            box-shadow: 0 0 10px rgba(57, 255, 20, 0.5);
+        }
+        
+        [data-theme="light"] .menu-toggle span {
+            box-shadow: 0 0 10px rgba(0, 179, 0, 0.5);
+        }
+
+        /* Theme Toggle Button */
+        .theme-toggle {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 60px;
+            height: 60px;
+            background: var(--neon-green);
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: var(--bg-primary); /* Багийн өнгө: Dark горимд хар, Light горимд цагаан */
+            box-shadow: 0 5px 20px rgba(57, 255, 20, 0.5);
+            transition: all 0.3s;
+            z-index: 999;
+        }
+
+        [data-theme="light"] .theme-toggle {
+            color: var(--text-primary); /* Light горимд хар */
+            box-shadow: 0 5px 20px rgba(0, 179, 0, 0.5);
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1) rotate(180deg);
+            box-shadow: 0 8px 30px var(--neon-green);
+        }
+
+        .theme-toggle:active {
+            transform: scale(0.95);
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 6rem 5% 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Hero Background Glow */
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(57, 255, 20, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 50%, rgba(0, 217, 255, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 50% 20%, rgba(57, 255, 20, 0.08) 0%, transparent 40%);
+            animation: pulse 8s ease-in-out infinite;
+            z-index: -1;
+        }
+        
+        [data-theme="light"] .hero::before {
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(0, 179, 0, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 50%, rgba(0, 119, 204, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 50% 20%, rgba(0, 179, 0, 0.08) 0%, transparent 40%);
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .hero-content {
+            max-width: 900px;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero h1 {
+            font-size: clamp(2rem, 6vw, 4.5rem);
+            font-weight: 900;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .highlight {
+            color: var(--neon-green);
+            text-shadow: 0 0 30px var(--neon-green), 0 0 60px rgba(57, 255, 20, 0.5);
+            animation: glow 2s ease-in-out infinite;
+        }
+        
+        [data-theme="light"] .highlight {
+            text-shadow: 0 0 30px var(--neon-green), 0 0 60px rgba(0, 179, 0, 0.5);
+        }
+
+        @keyframes glow {
+            0%, 100% { text-shadow: 0 0 30px var(--neon-green), 0 0 60px rgba(57, 255, 20, 0.5); }
+            50% { text-shadow: 0 0 40px var(--neon-green), 0 0 80px rgba(57, 255, 20, 0.7); }
+        }
+        
+                   @keyframes glow {
+                0%, 100% { text-shadow: 0 0 30px var(--neon-green), 0 0 60px rgba(57, 255, 20, 0.5); }
+                50% { text-shadow: 0 0 40px var(--neon-green), 0 0 80px rgba(57, 255, 20, 0.7); }
+            }
+            
+            [data-theme="light"] .highlight {
+                animation: glow 2s ease-in-out infinite;
+                text-shadow: 0 0 30px var(--neon-green), 0 0 60px rgba(0, 179, 0, 0.5);
+            }
+
+        .cta-button {
+            display: inline-block;
+            padding: 1.2rem 3rem;
+            background: var(--neon-green);
+            color: var(--bg-primary); /* Dark горимд хар, Light горимд цагаан (дэвсгэрийн өнгө) */
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.1rem;
+            border-radius: 8px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: all 0.3s;
+            box-shadow: 0 0 30px rgba(57, 255, 20, 0.6), 0 5px 20px rgba(0, 0, 0, 0.3);
+            margin-top: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        [data-theme="light"] .cta-button {
+            color: var(--text-primary); /* Light горимд хар */
+            box-shadow: 0 0 30px rgba(0, 179, 0, 0.6), 0 5px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .cta-button:hover::before {
+            left: 100%;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 50px var(--neon-green), 0 8px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Section Styles */
+        section {
+            padding: 6rem 5%;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s ease-out;
+        }
+
+        section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 900;
+            text-align: center;
+            margin-bottom: 4rem;
+            text-transform: uppercase;
+            color: var(--cyan);
+            text-shadow: 0 0 20px rgba(0, 217, 255, 0.5);
+            letter-spacing: 3px;
+            position: relative;
+        }
+        
+        [data-theme="light"] .section-title {
+            text-shadow: 0 0 20px rgba(0, 119, 204, 0.5);
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(90deg, transparent, var(--neon-green), transparent);
+            margin: 1rem auto 0;
+            border-radius: 2px;
+        }
+
+        /* Features Section */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2.5rem;
+        }
+
+        .feature-card {
+            background: linear-gradient(145deg, var(--bg-secondary), var(--bg-tertiary)); /* BG-Secondary, BG-Tertiary ашиглах */
+            padding: 3rem 2.5rem;
+            border-radius: 15px;
+            border: 1px solid rgba(57, 255, 20, 0.2);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        [data-theme="light"] .feature-card {
+             border: 1px solid rgba(0, 179, 0, 0.2);
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at top left, rgba(57, 255, 20, 0.1), transparent);
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+        
+        [data-theme="light"] .feature-card::before {
+            background: radial-gradient(circle at top left, rgba(0, 179, 0, 0.1), transparent);
+        }
+
+        .feature-card:hover::before {
+            opacity: 1;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-15px) scale(1.02);
+            border-color: var(--neon-green);
+            box-shadow: 0 15px 50px rgba(57, 255, 20, 0.3), 0 0 30px rgba(57, 255, 20, 0.2);
+        }
+        
+        [data-theme="light"] .feature-card:hover {
+            box-shadow: 0 15px 50px rgba(0, 179, 0, 0.3), 0 0 30px rgba(0, 179, 0, 0.2);
+        }
+
+        .feature-icon {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            display: block;
+            transition: transform 0.4s;
+        }
+
+        .feature-card:hover .feature-icon {
+            transform: scale(1.2) rotate(5deg);
+        }
+
+        .feature-card h3 {
+            color: var(--neon-green);
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .feature-card p {
+            color: var(--text-secondary); /* TEXT-Secondary ашиглах */
+            line-height: 1.7;
+            font-size: 1.05rem;
+        }
+
+        /* Services Section */
+        .services {
+            background: linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 50%, var(--bg-primary) 100%);
+        }
+
+        .services-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .service-item {
+            padding: 2.5rem;
+            background: linear-gradient(135deg, rgba(57, 255, 20, 0.05), rgba(0, 217, 255, 0.05));
+            border-left: 4px solid var(--neon-green);
+            border-radius: 8px;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        [data-theme="light"] .service-item {
+             background: linear-gradient(135deg, rgba(0, 179, 0, 0.05), rgba(0, 119, 204, 0.05));
+        }
+
+        .service-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100px;
+            height: 100px;
+            background: radial-gradient(circle, rgba(57, 255, 20, 0.1), transparent);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        [data-theme="light"] .service-item::before {
+            background: radial-gradient(circle, rgba(0, 179, 0, 0.1), transparent);
+        }
+
+        .service-item:hover::before {
+            opacity: 1;
+        }
+
+        .service-item:hover {
+            transform: translateX(10px);
+            box-shadow: -5px 0 20px rgba(57, 255, 20, 0.2);
+            background: linear-gradient(135deg, rgba(57, 255, 20, 0.08), rgba(0, 217, 255, 0.08));
+        }
+        
+        [data-theme="light"] .service-item:hover {
+            box-shadow: -5px 0 20px rgba(0, 179, 0, 0.2);
+            background: linear-gradient(135deg, rgba(0, 179, 0, 0.08), rgba(0, 119, 204, 0.08));
+        }
+
+        .service-item h3 {
+            color: var(--neon-green);
+            margin-bottom: 0.8rem;
+            font-weight: 700;
+            font-size: 1.3rem;
+        }
+
+        .service-item p {
+            color: var(--text-secondary); /* TEXT-Secondary ашиглах */
+            line-height: 1.6;
+        }
+
+        /* About Section */
+        .about-content {
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: center;
+            background: linear-gradient(145deg, var(--bg-secondary), var(--bg-tertiary));
+            padding: 4rem;
+            border-radius: 20px;
+            border: 1px solid rgba(0, 217, 255, 0.2);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+        }
+        
+        [data-theme="light"] .about-content {
+            border: 1px solid rgba(0, 119, 204, 0.2);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .about-content p {
+            font-size: 1.2rem;
+            line-height: 1.9;
+            margin-bottom: 1.8rem;
+            color: var(--text-secondary); /* TEXT-Secondary ашиглах */
+        }
+
+        .about-highlight {
+            color: var(--cyan);
+            font-weight: 700;
+            font-size: 1.5rem;
+            text-transform: uppercase;
+            display: block;
+            margin-top: 2.5rem;
+            text-shadow: 0 0 20px rgba(0, 217, 255, 0.5);
+            letter-spacing: 2px;
+            padding: 1.5rem;
+            background: rgba(0, 217, 255, 0.1);
+            border-radius: 10px;
+            border: 1px solid rgba(0, 217, 255, 0.3);
+        }
+        
+        [data-theme="light"] .about-highlight {
+            text-shadow: 0 0 20px rgba(0, 119, 204, 0.5);
+            background: rgba(0, 119, 204, 0.1);
+            border: 1px solid rgba(0, 119, 204, 0.3);
+        }
+
+        /* Contact Section */
+        .contact {
+            background: var(--bg-secondary);
+        }
+
+        .contact-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: start;
+        }
+
+        .contact-form {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            background: linear-gradient(145deg, var(--bg-tertiary), var(--bg-primary));
+            padding: 3rem;
+            border-radius: 15px;
+            border: 1px solid rgba(57, 255, 20, 0.2);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+        }
+        
+        [data-theme="light"] .contact-form {
+             border: 1px solid rgba(0, 179, 0, 0.2);
+             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            margin-bottom: 0.8rem;
+            color: var(--cyan);
+            font-weight: 600;
+            font-size: 1.05rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            padding: 1.2rem;
+            background: var(--bg-primary);
+            border: 2px solid rgba(57, 255, 20, 0.3);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+        
+        [data-theme="light"] .form-group input,
+        [data-theme="light"] .form-group textarea {
+            border: 2px solid rgba(0, 179, 0, 0.3);
+            background: var(--bg-secondary);
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--neon-green);
+            box-shadow: 0 0 20px rgba(57, 255, 20, 0.3);
+            background: var(--bg-secondary);
+        }
+        
+        [data-theme="light"] .form-group input:focus,
+        [data-theme="light"] .form-group textarea:focus {
+            box-shadow: 0 0 20px rgba(0, 179, 0, 0.3);
+            background: var(--bg-tertiary);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 180px;
+        }
+
+        .submit-btn {
+            padding: 1.2rem 2.5rem;
+            background: var(--neon-green);
+            color: var(--bg-primary); /* Dark горимд хар, Light горимд цагаан (дэвсгэрийн өнгө) */
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: all 0.3s;
+            font-size: 1.1rem;
+            letter-spacing: 2px;
+            box-shadow: 0 5px 20px rgba(57, 255, 20, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        [data-theme="light"] .submit-btn {
+            color: var(--text-primary); /* Light горимд хар */
+            box-shadow: 0 5px 20px rgba(0, 179, 0, 0.4);
+        }
+
+        .submit-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .submit-btn:hover::before {
+            left: 100%;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px var(--neon-green);
+        }
+
+        .submit-btn:active {
+            transform: translateY(-1px);
+        }
+
+        .contact-info {
+            background: linear-gradient(145deg, var(--bg-tertiary), var(--bg-primary));
+            padding: 3rem;
+            border-radius: 15px;
+            border: 1px solid rgba(0, 217, 255, 0.2);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+        }
+        
+        [data-theme="light"] .contact-info {
+             border: 1px solid rgba(0, 119, 204, 0.2);
+             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .contact-info h3 {
+            color: var(--cyan);
+            margin-bottom: 2rem;
+            font-size: 1.8rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .info-item {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: rgba(57, 255, 20, 0.05);
+            border-radius: 8px;
+            border-left: 3px solid var(--neon-green);
+            transition: all 0.3s;
+        }
+        
+        [data-theme="light"] .info-item {
+            background: rgba(0, 179, 0, 0.05);
+        }
+
+        .info-item:hover {
+            background: rgba(57, 255, 20, 0.08);
+            transform: translateX(5px);
+        }
+        
+        [data-theme="light"] .info-item:hover {
+            background: rgba(0, 179, 0, 0.08);
+        }
+
+
+        .info-item strong {
+            color: var(--neon-green);
+            display: block;
+            margin-bottom: 0.8rem;
+            font-size: 1.1rem;
+        }
+
+        .info-item p {
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1.5rem;
+            margin-top: 2.5rem;
+        }
+
+        .social-links a {
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(57, 255, 20, 0.1);
+            border: 2px solid var(--neon-green);
+            border-radius: 50%;
+            color: var(--neon-green);
+            text-decoration: none;
+            transition: all 0.3s;
+            font-size: 1.2rem;
+        }
+        
+        [data-theme="light"] .social-links a {
+            background: rgba(0, 179, 0, 0.1);
+            border: 2px solid var(--neon-green);
+            color: var(--neon-green);
+        }
+
+        .social-links a:hover {
+            background: var(--neon-green);
+            color: var(--bg-primary); /* Dark горимд хар, Light горимд цагаан */
+            transform: translateY(-5px) rotate(360deg);
+            box-shadow: 0 5px 20px rgba(57, 255, 20, 0.5);
+        }
+        
+        [data-theme="light"] .social-links a:hover {
+            color: var(--text-primary); /* Light горимд хар */
+            box-shadow: 0 5px 20px rgba(0, 179, 0, 0.5);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--bg-primary);
+            text-align: center;
+            padding: 2.5rem 5%;
+            border-top: 1px solid rgba(57, 255, 20, 0.2);
+        }
+        
+        [data-theme="light"] footer {
+            border-top: 1px solid rgba(0, 179, 0, 0.2);
+        }
+
+        footer p {
+            color: var(--text-secondary);
+            font-size: 1rem;
+        }
+
+        /* Mobile Styles */
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: flex;
+            }
+
+            .nav-links {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: rgba(0, 0, 0, 0.98);
+                
+                /* Light горимд зориулсан тусгай заалт */
+                background: var(--bg-primary);
+                
+                -webkit-backdrop-filter: blur(20px); 
+                backdrop-filter: blur(20px);
+                
+                flex-direction: column;
+                padding: 2rem;
+                gap: 1.5rem;
+                transform: translateY(-100%);
+                opacity: 0;
+                pointer-events: none;
+                transition: all 0.3s;
+                border-bottom: 1px solid rgba(57, 255, 20, 0.2);
+            }
+            
+            [data-theme="light"] .nav-links {
+                background: rgba(255, 255, 255, 0.98);
+                border-bottom: 1px solid rgba(0, 179, 0, 0.2);
+            }
+
+            .nav-links.active {
+                transform: translateY(0);
+                opacity: 1;
+                pointer-events: all;
+            }
+
+            .contact-content {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+
+            section {
+                padding: 4rem 5%;
+            }
+
+            .about-content {
+                padding: 2.5rem;
+            }
+
+            .contact-form,
+            .contact-info {
+                padding: 2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .features-grid,
+            .services-list {
+                grid-template-columns: 1fr;
+            }
+
+            .hero {
+                padding: 5rem 5% 3rem;
+            }
+
+            .feature-card {
+                padding: 2rem 1.5rem;
+            }
+
+            .theme-toggle {
+                bottom: 1.5rem;
+                right: 1.5rem;
+                width: 50px;
+                height: 50px;
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="container">
+            <div class="logo" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">Bridge Digital</div>
+            <div class="menu-toggle" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#features" onclick="closeMenu()">Давуу Тал</a></li>
+                <li><a href="#services" onclick="closeMenu()">Үйлчилгээ</a></li>
+                <li><a href="#about" onclick="closeMenu()">Бидний Тухай</a></li>
+                <li><a href="#contact" onclick="closeMenu()">Холбоо Барих</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1>
+                ТАНЫ БИЗНЕСИЙГ <span class="highlight">ДИЖИТАЛ ПЛАТФОРМ</span> ДЭЭР ХУРДАСГАНА
+            </h1>
+            <a href="#contact" class="cta-button">Үнийн Санал Авах</a>
+        </div>
+    </section>
+
+    <section id="features">
+        <div class="container">
+            <h2 class="section-title">Бидний Давуу Тал</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🚀</div>
+                    <h3>ҮНЭГҮЙ ХОСТИНГ</h3>
+                    <p>Жилийн төлбөргүй Netlify/Vercel шийдэл. Таны вэб сайт байнга онлайн, төлбөргүй.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📱</div>
+                    <h3>УТАС/ТАБЛЕТАД ТӨГС</h3>
+                    <p>Гар утас, таблет багтаасан бүх төхөөрөмжид 100% тохирно. Хэн ч, хаанаас ч хандах боломжтой.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3>ХУРДАН АЧААЛАЛ</h3>
+                    <p>Цэвэр, хурдтай кодны ачаар секундэд ачаална. Google-д өндөр эрэмбэлэгддэг.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="services" id="services">
+        <div class="container">
+            <h2 class="section-title">Үйлчилгээ</h2>
+            <div class="services-list">
+                <div class="service-item">
+                    <h3>Мэргэжлийн 1 Хуудасны Вэб Сайт</h3>
+                    <p>Орчин үеийн дизайн, хурдан ачаалал, бүрэн responsive</p>
+                </div>
+                <div class="service-item">
+                    <h3>SEO Суурилуулалт</h3>
+                    <p>Google-д тэргүүлэх байрлалд гарахад туслах</p>
+                </div>
+                <div class="service-item">
+                    <h3>Загвар Шинэчлэлт</h3>
+                    <p>Хэзээ ч шинэчлэх, өөрчлөх боломжтой</p>
+                </div>
+                <div class="service-item">
+                    <h3>Техникийн Дэмжлэг</h3>
+                    <p>24/7 техникийн туслалцаа, тогтвортой ажиллагаа</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="about">
+        <div class="container">
+            <h2 class="section-title">Бидний Тухай</h2>
+            <div class="about-content">
+                <p>
+                    Bridge Digital нь орчин үеийн технологи ашиглан бизнесүүдийг дижитал орчинд амжилттай үйл ажиллагаа явуулахад туслах зорилготой. Бид таны бизнесийг хурдан, найдвартай, үр дүнтэй платформ дээр байршуулна.
+                </p>
+                <p>
+                    Манай баг бүрэн мэргэшсэн, туршлагатай хөгжүүлэгчдээс бүрддэг. Бид чанарт анхаарч, харилцагч бүрийн хэрэгцээг ойлгож ажилладаг.
+                </p>
+                <span class="about-highlight">
+                    БИДЭНД ХАМГИЙН СҮҮЛИЙН ҮЕИЙН ВЭБ САЙТЫН КОД БИЧИХ УР ЧАДВАР БИЙ
+                </span>
+            </div>
+        </div>
+    </section>
+
+    <section class="contact" id="contact">
+        <div class="container">
+            <h2 class="section-title">Холбоо Барих</h2>
+            <div class="contact-content">
+                <form class="contact-form" action="https://formsubmit.co/bridgedigitalhk@gmail.com" method="POST">
+                    <input type="hidden" name="_captcha" value="false">
+                    <input type="hidden" name="_subject" value="Bridge Digital - Шинэ Холбоо Барих Мессеж">
+                    <input type="hidden" name="_template" value="table">
+                    <input type="hidden" name="_next" value="https://yourdomain.com/thank-you.html">
+                    
+                    <div class="form-group">
+                        <label for="name">Нэр</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">И-мэйл</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Мессеж</label>
+                        <textarea id="message" name="message" required></textarea>
+                    </div>
+                    <button type="submit" class="submit-btn">Илгээх</button>
+                </form>
+                <div class="contact-info">
+                    <h3>Холбоо Барих Мэдээлэл</h3>
+                    <div class="info-item">
+                        <strong>📞 Утас:</strong>
+                        <p>95536657</p>
+                    </div>
+                    <div class="info-item">
+                        <strong>✉️ И-мэйл:</strong>
+                        <p>bridgedigitalhk@gmail.com</p>
+                    </div>
+                    <div class="info-item">
+                        <strong>📍 Хаяг:</strong>
+                        <p>Улаанбаатар хот, Монгол Улс</p>
+                    </div>
+                    <div class="social-links">
+    <a href="https://www.facebook.com/share/1E2TFvYv8q/" title="Facebook" target="_blank">f</a>
+</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Bridge Digital. Бүх эрх хуулиар хамгаалагдсан.</p>
+        </div>
+    </footer>
+
+    <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+        <span id="themeIcon">🌙</span>
+    </button>
+
+    <script>
+        // Theme Toggle
+        function toggleTheme() {
+            const html = document.documentElement;
+            const themeIcon = document.getElementById('themeIcon');
+            const currentTheme = html.getAttribute('data-theme');
+            
+            if (currentTheme === 'light') {
+                html.setAttribute('data-theme', 'dark');
+                themeIcon.textContent = '🌙';
+                localStorage.setItem('theme', 'dark');
+            } else {
+                html.setAttribute('data-theme', 'light');
+                themeIcon.textContent = '☀️';
+                localStorage.setItem('theme', 'light');
+            }
+        }
+
+        // Load saved theme
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem('theme') || 'dark';
+            const themeIcon = document.getElementById('themeIcon');
+            
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            themeIcon.textContent = savedTheme === 'light' ? '☀️' : '🌙';
+        });
+
+        // Scroll reveal animation
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('section').forEach(section => {
+            observer.observe(section);
+        });
+
+        // Mobile menu toggle
+        function toggleMenu() {
+            const navLinks = document.getElementById('navLinks');
+            navLinks.classList.toggle('active');
+        }
+
+        function closeMenu() {
+            const navLinks = document.getElementById('navLinks');
+            navLinks.classList.remove('active');
+        }
+
+        // Smooth scroll for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
